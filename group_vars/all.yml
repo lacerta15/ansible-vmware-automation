@@ -1,0 +1,5 @@
+vcenter_hostname: "{{ lookup('env','VCENTER_HOST') }}"
+vcenter_username: "{{ lookup('env','VCENTER_USER') }}"
+vcenter_password: "{{ lookup('env','VCENTER_PASS') }}"
+vcenter_datacenter: DC1
+vcenter_validate_certs: false

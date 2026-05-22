@@ -1,0 +1,34 @@
+---
+- name: Create VM from template
+  hosts: localhost
+  gather_facts: false
+  vars:
+    vm_name: new-vm-01
+    template_name: rhel8-template
+    datastore: datastore1
+    cluster: cluster1
+    vm_folder: /DC1/vm/Prod
+    vm_cpu: 4
+    vm_memory_mb: 8192
+  tasks:
+    - name: Deploy VM from template
+      community.vmware.vmware_guest:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: "{{ vcenter_validate_certs }}"
+        name: "{{ vm_name }}"
+        template: "{{ template_name }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        cluster: "{{ cluster }}"
+        datastore: "{{ datastore }}"
+        folder: "{{ vm_folder }}"
+        hardware:
+          num_cpus: "{{ vm_cpu }}"
+          memory_mb: "{{ vm_memory_mb }}"
+        state: poweredon
+      register: vm_result
+
+    - name: Print VM info
+      debug:
+        msg: "VM {{ vm_name }} created: {{ vm_result }}"

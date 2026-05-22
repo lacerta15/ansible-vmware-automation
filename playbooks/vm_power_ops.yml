@@ -1,0 +1,18 @@
+---
+- name: Power operations on VMs
+  hosts: localhost
+  gather_facts: false
+  vars:
+    power_state: powered-on   # powered-on | powered-off | restarted
+    vm_list:
+      - vm-dev-01
+  tasks:
+    - name: Set VM power state
+      community.vmware.vmware_guest_powerstate:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: "{{ vcenter_validate_certs }}"
+        name: "{{ item }}"
+        state: "{{ power_state }}"
+      loop: "{{ vm_list }}"

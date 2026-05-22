@@ -1,0 +1,16 @@
+---
+- name: Gather VM information
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Get all VMs info
+      community.vmware.vmware_vm_info:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: "{{ vcenter_validate_certs }}"
+      register: vm_info
+
+    - name: Print VM list
+      debug:
+        msg: "{{ vm_info.virtual_machines | map(attribute='guest_name') | list }}"
